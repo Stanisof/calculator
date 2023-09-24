@@ -1,0 +1,52 @@
+@font-face {
+    font-family: Handjet;
+    src: url('./Handjet-VariableFont_ELGR\,ELSH\,wght.ttf')
+}
+
+* {
+    font-family: Handjet;
+}
+
+.calculator {
+    height: 650px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+#screen {
+    width: 500px;
+    height: 130px;
+    background-color: darkgray;
+}
+
+.keys {
+    display: flex;
+}
+
+.input button {
+    width: 125px;
+    height:130px;
+    background-color: darkorange;
+    font-size: 50px;
+    border-style: solid;
+    border-color: rgb(176, 114, 0);
+}
+.input,
+.rechenzeichen {
+    display:flex;
+    flex-wrap: wrap;
+    
+}
+
+.rechenzeichen {
+    flex-direction: column;
+}
+
+.rechenzeichen button {
+    flex: 1;
+    width: 125px;
+    background-color: grey;
+    font-size: 35px;
+    border-style: solid;
+}
