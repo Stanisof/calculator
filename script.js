@@ -1,8 +1,8 @@
+let displayVal = "0";
 let firstNum = "0";
 let operator = "0";
 let secondNum = "0";
-let displayVal = "0";
-
+let resultVal = "0";
 
 function add(a,b) {
     return a + b;
@@ -21,12 +21,13 @@ function divide(a,b) {
 }
 
 function operate(x,o,y) {
-    firstNum = x;
-    operator = o;
-    secondNum = y;
-    let sum = 0;
+    x = firstNum;
+    o = operator;
+    y = secondNum;
+    
     if (o === "+") {
-        return add(x,y)
+        resultVal = add(x,y)
+        result.textContent = resultVal;
     } else if (o === "-") {
         return subtract(x,y)
     } else if (o === "*") {
@@ -38,9 +39,15 @@ function operate(x,o,y) {
 
 const expression = document.querySelector('#expression');
 
+const result = document.querySelector('#result');
+
 const btnDelete = document.querySelector('#delete');
 
 const btnClear = document.querySelector('#clear');
+btnClear.addEventListener ('click', () => {
+    expression.textContent = "";
+    result.textContent = "";
+})
 
 
 const btn1 = document.querySelector('#one');
@@ -58,6 +65,7 @@ btn2.addEventListener('click', () => {
 
 const btn3 = document.querySelector('#three');
 btn3.addEventListener('click', () => {
+    expression.textContent += "3";
     displayVal = expression.textContent;
 });
 
@@ -103,10 +111,19 @@ btn0.addEventListener('click', () => {
     displayVal = expression.textContent;
 })
 
+const comma = document.querySelector('#comma');
+comma.addEventListener('click', () => 
+    expression.textContent += ","
+)
+
 const plus = document.querySelector('#plus');
 plus.addEventListener('click', () => {
-    expression.textContent += "+";
+    if (!displayVal.includes("+")) {
+        expression.textContent += "+";
+    }
     displayVal = expression.textContent;
+    operator = "+";
+    firstNum = Number(displayVal.slice(0,-1));
 });
 
 const minus = document.querySelector('#minus');
@@ -128,5 +145,9 @@ division.addEventListener('click', () => {
 });
 
 const equals = document.querySelector('#equals');
+equals.addEventListener('click', () => {
+    secondNum = Number(displayVal.split('+')[1]);
+    operate();
+})
 
 
