@@ -29,11 +29,14 @@ function operate(x,o,y) {
         resultVal = add(x,y)
         result.textContent = resultVal;
     } else if (o === "-") {
-        return subtract(x,y)
+        resultVal = subtract(x,y)
+        result.textContent = resultVal;
     } else if (o === "*") {
-        return multiply(x,y)
+        resultVal = multiply(x,y)
+        result.textContent = resultVal;
     } else if (o === "/") {
-        return divide(x,y) 
+        resultVal = divide(x,y)
+        result.textContent = resultVal; 
     }
 }
 
@@ -42,11 +45,22 @@ const expression = document.querySelector('#expression');
 const result = document.querySelector('#result');
 
 const btnDelete = document.querySelector('#delete');
+btnDelete.addEventListener('click', () => {
+let deleteVal = displayVal.slice(0,-1);
+displayVal = deleteVal;
+expression.textContent = displayVal;
+}
+)
 
 const btnClear = document.querySelector('#clear');
 btnClear.addEventListener ('click', () => {
     expression.textContent = "";
     result.textContent = "";
+    displayVal = "0";
+    firstNum = "0";
+    operator = "0";
+    secondNum = "0";
+    resultVal = "0";
 })
 
 
@@ -118,35 +132,57 @@ comma.addEventListener('click', () =>
 
 const plus = document.querySelector('#plus');
 plus.addEventListener('click', () => {
+    operator = "+";
     if (!displayVal.includes("+")) {
         expression.textContent += "+";
     }
     displayVal = expression.textContent;
-    operator = "+";
+    
     firstNum = Number(displayVal.slice(0,-1));
 });
 
 const minus = document.querySelector('#minus');
 minus.addEventListener('click', () => {
-    expression.textContent += "-";
+    operator = "-";
+    if (!displayVal.includes("-")) {
+        expression.textContent += "-";
+    }
     displayVal = expression.textContent;
+    firstNum = Number(displayVal.slice(0,-1));
 });
 
 const multication = document.querySelector('#multiplication');
 multiplication.addEventListener('click', () => {
     expression.textContent += "*";
     displayVal = expression.textContent;
+    operator = "*";
+    firstNum = Number(displayVal.slice(0,-1));
 });
 
 const division = document.querySelector('#division');
 division.addEventListener('click', () => {
     expression.textContent += "/";
     displayVal = expression.textContent;
+    operator = "/";
+    firstNum = Number(displayVal.slice(0,-1));
 });
 
 const equals = document.querySelector('#equals');
 equals.addEventListener('click', () => {
-    secondNum = Number(displayVal.split('+')[1]);
+    switch(operator) {
+    case "+":
+       secondNum = Number(displayVal.split('+')[1]); 
+       break
+    case "-":
+        secondNum = Number(displayVal.split('-')[1]); 
+        break
+    case "*":
+        secondNum = Number(displayVal.split('*')[1]);
+        break
+    case "/":
+        secondNum = Number(displayVal.split('/')[1]); 
+        break
+    }
     operate();
 })
 
