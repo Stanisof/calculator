@@ -1,7 +1,9 @@
-let displayVal = "0";
+
+
 let firstNum = "0";
 let operator = "0";
 let secondNum = "0";
+let displayVal = `${firstnum}${operator}${secondNum}`;
 let resultVal = "0";
 
 function add(a,b) {
@@ -127,7 +129,7 @@ btn0.addEventListener('click', () => {
 
 const comma = document.querySelector('#comma');
 comma.addEventListener('click', () => 
-    expression.textContent += ","
+    expression.textContent += "."
 )
 
 const plus = document.querySelector('#plus');
@@ -137,7 +139,6 @@ plus.addEventListener('click', () => {
         expression.textContent += "+";
     }
     displayVal = expression.textContent;
-    
     firstNum = Number(displayVal.slice(0,-1));
 });
 
@@ -153,22 +154,27 @@ minus.addEventListener('click', () => {
 
 const multication = document.querySelector('#multiplication');
 multiplication.addEventListener('click', () => {
-    expression.textContent += "*";
-    displayVal = expression.textContent;
     operator = "*";
+    if (!displayVal.includes("x")) {
+        expression.textContent += "x";
+    }
+    displayVal = expression.textContent;
     firstNum = Number(displayVal.slice(0,-1));
 });
 
 const division = document.querySelector('#division');
 division.addEventListener('click', () => {
-    expression.textContent += "/";
-    displayVal = expression.textContent;
     operator = "/";
+    if (!displayVal.includes("-")) {
+        expression.textContent += "÷";
+    }
+    displayVal = expression.textContent;
     firstNum = Number(displayVal.slice(0,-1));
 });
 
 const equals = document.querySelector('#equals');
 equals.addEventListener('click', () => {
+    expression.textContent += "=";
     switch(operator) {
     case "+":
        secondNum = Number(displayVal.split('+')[1]); 
@@ -177,10 +183,10 @@ equals.addEventListener('click', () => {
         secondNum = Number(displayVal.split('-')[1]); 
         break
     case "*":
-        secondNum = Number(displayVal.split('*')[1]);
+        secondNum = Number(displayVal.split('x')[1]);
         break
     case "/":
-        secondNum = Number(displayVal.split('/')[1]); 
+        secondNum = Number(displayVal.split('÷')[1]); 
         break
     }
     operate();
