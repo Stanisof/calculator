@@ -1,9 +1,7 @@
-
-
+let displayVal = "0";
 let firstNum = "0";
 let operator = "0";
 let secondNum = "0";
-let displayVal = `${firstnum}${operator}${secondNum}`;
 let resultVal = "0";
 
 function add(a,b) {
@@ -41,6 +39,23 @@ function operate(x,o,y) {
         result.textContent = resultVal; 
     }
 }
+
+function chainCal() {
+    switch(operator){
+        case("+"):
+            expression.textContent = `${resultVal}+`
+        break
+        case("-"):
+            expression.textContent = `${resultVal}-`
+        break
+        case("*"):
+            expression.textContent = `${resultVal}x`
+        break
+        case("/"):
+            expression.textContent = `${resultVal}÷`
+        }
+}
+
 
 const expression = document.querySelector('#expression');
 
@@ -134,47 +149,95 @@ comma.addEventListener('click', () =>
 
 const plus = document.querySelector('#plus');
 plus.addEventListener('click', () => {
-    operator = "+";
+
     if (!displayVal.includes("+")) {
         expression.textContent += "+";
+        operator = "+";
+    } 
+    
+    if(displayVal.includes("=")){
+        chainCal();
+    }else if(displayVal.includes("-") || displayVal.includes("x") || displayVal.includes("÷")){
+        operator = "+";
+        let deleteVal = displayVal.slice(0,-1);
+        displayVal = deleteVal;
+        expression.textContent = `${displayVal}+`;
     }
+
     displayVal = expression.textContent;
-    firstNum = Number(displayVal.slice(0,-1));
+    firstNum = Number(displayVal.slice(0,-1));    
 });
 
 const minus = document.querySelector('#minus');
 minus.addEventListener('click', () => {
-    operator = "-";
+   
     if (!displayVal.includes("-")) {
         expression.textContent += "-";
+        operator = "-";
     }
+
+    if(displayVal.includes("=")){
+        chainCal();
+    } else if(displayVal.includes("+") || displayVal.includes("x") || displayVal.includes("÷")){
+        operator = "-";
+        let deleteVal = displayVal.slice(0,-1);
+        displayVal = deleteVal;
+        expression.textContent = `${displayVal}-`;
+    }
+
     displayVal = expression.textContent;
     firstNum = Number(displayVal.slice(0,-1));
 });
 
 const multication = document.querySelector('#multiplication');
 multiplication.addEventListener('click', () => {
-    operator = "*";
+     
     if (!displayVal.includes("x")) {
+        operator = "*";
         expression.textContent += "x";
     }
+
+    if(displayVal.includes("=")){
+        chainCal();
+    } else if(displayVal.includes("-") || displayVal.includes("+") || displayVal.includes("÷")){
+        operator = "*";
+        let deleteVal = displayVal.slice(0,-1);
+        displayVal = deleteVal;
+        expression.textContent = `${displayVal}x`;
+    }
+
     displayVal = expression.textContent;
     firstNum = Number(displayVal.slice(0,-1));
 });
 
 const division = document.querySelector('#division');
 division.addEventListener('click', () => {
-    operator = "/";
-    if (!displayVal.includes("-")) {
+    
+    if (!displayVal.includes("÷")) {
+        operator = "/";
         expression.textContent += "÷";
     }
+    
+    if(displayVal.includes("=")){
+        chainCal();
+    } else if (displayVal.includes("-") || displayVal.includes("x") || displayVal.includes("+")){
+        operator = "/";
+        let deleteVal = displayVal.slice(0,-1);
+        displayVal = deleteVal;
+        expression.textContent = `${displayVal}÷`;
+    }
+
     displayVal = expression.textContent;
     firstNum = Number(displayVal.slice(0,-1));
 });
 
 const equals = document.querySelector('#equals');
 equals.addEventListener('click', () => {
-    expression.textContent += "=";
+
+    if (!expression.textContent.includes("=")) {
+        expression.textContent += "=";
+    }
+    
     switch(operator) {
     case "+":
        secondNum = Number(displayVal.split('+')[1]); 
@@ -190,6 +253,7 @@ equals.addEventListener('click', () => {
         break
     }
     operate();
+    displayVal = expression.textContent;
 })
 
 
