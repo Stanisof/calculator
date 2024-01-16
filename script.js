@@ -1,8 +1,71 @@
-let displayVal = "0";
-let firstNum = "0";
-let operator = "0";
-let secondNum = "0";
-let resultVal = "0";
+let operation = '';
+let firstNum = '';
+let operator = '';
+let secondNum = '';
+let ongoingOperation = false;
+let resultVal = '';
+
+const lastOp = document.querySelector('#lastOp');
+const currentOp = document.querySelector('#currentOp');
+const numberButton = document.querySelectorAll('.number');
+const operatorButton = document.querySelectorAll('.operator')
+const equals = document.querySelector('#equals');
+
+numberButton.forEach((button) => 
+    button.addEventListener('click', () => inputNumber(button)));
+
+operatorButton.forEach((button) => {
+    button.addEventListener('click', () => {
+        setupOperation(button);
+})});
+
+function inputNumber(button) {
+    checkOpStatus();
+    currentOp.textContent += button.textContent;
+}
+
+function setupOperation(button) {
+    transformOperator(button);
+    firstNum = Number(currentOp.textContent);
+    lastOp.textContent = `${firstNum}${operator}`;
+    ongoingOperation = true;
+
+}
+
+function checkOpStatus() {
+    if (ongoingOperation) {
+        currentOp.textContent = '';}
+    ongoingOperation = false;
+}
+
+function transformOperator(button) {
+    switch(button.textContent) {
+        case('+'):
+        case('-'):
+        operator = button.textContent
+            break
+        case('x'):
+        operator = '*'
+            break
+        case('÷'):
+        operator = '/'
+            break
+    }
+}
+
+
+
+equals.addEventListener('click', () => {
+
+    secondNum = Number(currentOp.textContent);
+    resultVal = operate(firstNum,operator,secondNum);
+    lastOp.textContent = `${firstNum}${operator}${secondNum}=`;
+    currentOp.textContent = resultVal;
+
+
+    
+})
+
 
 function add(a,b) {
     return a + b;
@@ -20,240 +83,144 @@ function divide(a,b) {
     return a / b;
 }
 
-function operate(x,o,y) {
-    x = firstNum;
+function operate(a,o,b) {
+    a = firstNum;
     o = operator;
-    y = secondNum;
+    b = secondNum;
     
-    if (o === "+") {
-        resultVal = add(x,y)
-        result.textContent = resultVal;
-    } else if (o === "-") {
-        resultVal = subtract(x,y)
-        result.textContent = resultVal;
-    } else if (o === "*") {
-        resultVal = multiply(x,y)
-        result.textContent = resultVal;
-    } else if (o === "/") {
-        resultVal = divide(x,y)
-        result.textContent = resultVal; 
+    switch(o) {
+        case "+":
+            return add(a,b)
+        case "-":
+            return subtract(a,b)
+        case "*":
+            return multiply(a,b)
+        case "/":
+            return divide(a,b)
     }
 }
 
 function chainCal() {
     switch(operator){
         case("+"):
-            expression.textContent = `${resultVal}+`
+            lastOp.textContent = `${resultVal}+`
         break
         case("-"):
-            expression.textContent = `${resultVal}-`
+            lastOp.textContent = `${resultVal}-`
         break
         case("*"):
-            expression.textContent = `${resultVal}x`
+            lastOp.textContent = `${resultVal}x`
         break
         case("/"):
-            expression.textContent = `${resultVal}÷`
+            lastOp.textContent = `${resultVal}÷`
         }
 }
 
 
-const expression = document.querySelector('#expression');
 
-const result = document.querySelector('#result');
 
 const btnDelete = document.querySelector('#delete');
 btnDelete.addEventListener('click', () => {
-let deleteVal = displayVal.slice(0,-1);
-displayVal = deleteVal;
-expression.textContent = displayVal;
-}
-)
+    let deleteVal = operation.slice(0,-1);
+    operation = deleteVal;
+    lastOp.textContent = operation;
+    });
 
 const btnClear = document.querySelector('#clear');
 btnClear.addEventListener ('click', () => {
-    expression.textContent = "";
-    result.textContent = "";
-    displayVal = "0";
-    firstNum = "0";
-    operator = "0";
-    secondNum = "0";
-    resultVal = "0";
+    lastOp.textContent = "";
+    currentOp.textContent = "";
+    operation = '';
+    firstNum = '';
+    operator = '';
+    secondNum = '';
+    resultVal = '';
 })
 
 
-const btn1 = document.querySelector('#one');
-btn1.addEventListener('click', () => {
-    expression.textContent += "1";
-    displayVal = expression.textContent;
-});
-
-
-const btn2 = document.querySelector('#two');
-btn2.addEventListener('click', () => {
-    expression.textContent += "2"
-    displayVal = expression.textContent;
-});
-
-const btn3 = document.querySelector('#three');
-btn3.addEventListener('click', () => {
-    expression.textContent += "3";
-    displayVal = expression.textContent;
-});
-
-const btn4 = document.querySelector('#four');
-btn4.addEventListener('click', () => {
-    expression.textContent += "4";
-    displayVal = expression.textContent;
-});
-
-const btn5 = document.querySelector('#five');
-btn5.addEventListener('click', () => {
-    expression.textContent += "5";
-    displayVal = expression.textContent;
-});
-
-const btn6 = document.querySelector('#six');
-btn6.addEventListener('click', () => {
-    expression.textContent += "6";
-    displayVal = expression.textContent;
-});
-
-const btn7 = document.querySelector('#seven');
-btn7.addEventListener('click', () => {
-    expression.textContent += "7";
-    displayVal = expression.textContent;
-});
-
-const btn8 = document.querySelector('#eight');
-btn8.addEventListener('click', () => {
-    expression.textContent += "8";
-    displayVal = expression.textContent;
-});
-
-const btn9 = document.querySelector('#nine');
-btn9.addEventListener('click', () => {
-    expression.textContent += "9";
-    displayVal = expression.textContent;
-});
-
-const btn0 = document.querySelector('#zero');
-btn0.addEventListener('click', () => {
-    expression.textContent += "0";
-    displayVal = expression.textContent;
-})
-
-const comma = document.querySelector('#comma');
-comma.addEventListener('click', () => 
-    expression.textContent += "."
-)
-
-const plus = document.querySelector('#plus');
+/* const plus = document.querySelector('#plus');
 plus.addEventListener('click', () => {
 
-    if (!displayVal.includes("+")) {
-        expression.textContent += "+";
+    if (!operation.includes("+")) {
+        lastOp.textContent += "+";
         operator = "+";
     } 
     
-    if(displayVal.includes("=")){
+    if(operation.includes("=")){
         chainCal();
-    }else if(displayVal.includes("-") || displayVal.includes("x") || displayVal.includes("÷")){
+    }else if(operation.includes("-") || operation.includes("x") || operation.includes("÷")){
         operator = "+";
-        let deleteVal = displayVal.slice(0,-1);
-        displayVal = deleteVal;
-        expression.textContent = `${displayVal}+`;
+        let deleteVal = operation.slice(0,-1);
+        operation = deleteVal;
+        lastOp.textContent = `${operation}+`;
     }
 
-    displayVal = expression.textContent;
-    firstNum = Number(displayVal.slice(0,-1));    
+    operation = lastOp.textContent;
+    firstNum = Number(operation.slice(0,-1));    
 });
 
 const minus = document.querySelector('#minus');
 minus.addEventListener('click', () => {
    
-    if (!displayVal.includes("-")) {
-        expression.textContent += "-";
+    if (!operation.includes("-")) {
+        lastOp.textContent += "-";
         operator = "-";
     }
 
-    if(displayVal.includes("=")){
+    if(operation.includes("=")){
         chainCal();
-    } else if(displayVal.includes("+") || displayVal.includes("x") || displayVal.includes("÷")){
+    } else if(operation.includes("+") || operation.includes("x") || operation.includes("÷")){
         operator = "-";
-        let deleteVal = displayVal.slice(0,-1);
-        displayVal = deleteVal;
-        expression.textContent = `${displayVal}-`;
+        let deleteVal = operation.slice(0,-1);
+        operation = deleteVal;
+        lastOp.textContent = `${operation}-`;
     }
 
-    displayVal = expression.textContent;
-    firstNum = Number(displayVal.slice(0,-1));
+    operation = lastOp.textContent;
+    firstNum = Number(operation.slice(0,-1));
 });
 
 const multication = document.querySelector('#multiplication');
 multiplication.addEventListener('click', () => {
      
-    if (!displayVal.includes("x")) {
+    if (!operation.includes("x")) {
         operator = "*";
-        expression.textContent += "x";
+        lastOp.textContent += "x";
     }
 
-    if(displayVal.includes("=")){
+    if(operation.includes("=")){
         chainCal();
-    } else if(displayVal.includes("-") || displayVal.includes("+") || displayVal.includes("÷")){
+    } else if(operation.includes("-") || operation.includes("+") || operation.includes("÷")){
         operator = "*";
-        let deleteVal = displayVal.slice(0,-1);
-        displayVal = deleteVal;
-        expression.textContent = `${displayVal}x`;
+        let deleteVal = operation.slice(0,-1);
+        operation = deleteVal;
+        lastOp.textContent = `${operation}x`;
     }
 
-    displayVal = expression.textContent;
-    firstNum = Number(displayVal.slice(0,-1));
+    operation = lastOp.textContent;
+    firstNum = Number(operation.slice(0,-1));
 });
 
 const division = document.querySelector('#division');
 division.addEventListener('click', () => {
     
-    if (!displayVal.includes("÷")) {
+    if (!operation.includes("÷")) {
         operator = "/";
-        expression.textContent += "÷";
+        lastOp.textContent += "÷";
     }
     
-    if(displayVal.includes("=")){
+    if(operation.includes("=")){
         chainCal();
-    } else if (displayVal.includes("-") || displayVal.includes("x") || displayVal.includes("+")){
+    } else if (operation.includes("-") || operation.includes("x") || operation.includes("+")){
         operator = "/";
-        let deleteVal = displayVal.slice(0,-1);
-        displayVal = deleteVal;
-        expression.textContent = `${displayVal}÷`;
+        let deleteVal = operation.slice(0,-1);
+        operation = deleteVal;
+        lastOp.textContent = `${operation}÷`;
     }
 
-    displayVal = expression.textContent;
-    firstNum = Number(displayVal.slice(0,-1));
-});
+    operation = lastOp.textContent;
+    firstNum = Number(operation.slice(0,-1));
+}); */
 
-const equals = document.querySelector('#equals');
-equals.addEventListener('click', () => {
-
-    if (!expression.textContent.includes("=")) {
-        expression.textContent += "=";
-    }
-    
-    switch(operator) {
-    case "+":
-       secondNum = Number(displayVal.split('+')[1]); 
-       break
-    case "-":
-        secondNum = Number(displayVal.split('-')[1]); 
-        break
-    case "*":
-        secondNum = Number(displayVal.split('x')[1]);
-        break
-    case "/":
-        secondNum = Number(displayVal.split('÷')[1]); 
-        break
-    }
-    operate();
-    displayVal = expression.textContent;
-})
 
 

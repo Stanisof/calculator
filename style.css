@@ -31,8 +31,10 @@ body {
     flex: 1;
 }
 
+
 #screen div {
     display: flex;
+    height: 56px;
     justify-content: end;
     padding: 0 40px 0 0;
 }
