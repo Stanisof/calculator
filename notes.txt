@@ -1,4 +1,3 @@
 - cannot start with operator/equals
-- when e.g. 5+5 is typed then other operator is passed it should calculate 
-and continue with pressed operator
+
 - delete displayVal branch
