@@ -7,42 +7,37 @@ let chainedOperations = null;
 const lastOp = document.querySelector('#lastOp');
 const currentOp = document.querySelector('#currentOp');
 const numberButton = document.querySelectorAll('.number');
-const operatorButton = document.querySelectorAll('.operator')
+const pointButton = document.querySelector('.point');
+const operatorButton = document.querySelectorAll('.operator');
 const equals = document.querySelector('#equals');
 const btnDelete = document.querySelector('#delete');
 const btnClear = document.querySelector('#clear');
 
+document.addEventListener('keydown', keyboardSupport)
+
+btnDelete.addEventListener('click', () => backspace(currentOp.textContent));
+btnClear.addEventListener ('click', () => clear)
+
 numberButton.forEach((button) => 
-    button.addEventListener('click', () => inputNumber(button)));
+    button.addEventListener('click', () => inputNumber(button.textContent)));
+
+pointButton.addEventListener('click', () => typePoint)
 
 operatorButton.forEach((button) => {
-    button.addEventListener('click', () => setupOperation(button))});
+    button.addEventListener('click', () => setupOperation(button.textContent))});
 
 equals.addEventListener('click', () => evaluate())
 
 
 function inputNumber(button) {
     checkOpStatus();
-    currentOp.textContent += button.textContent;
+    currentOp.textContent += button;
 }
 
-function setupOperation(button) {
-   
-    operator = button.textContent;
-    if (chainedOperations != null) {
-        operator = chainedOperations;
-        secondNum = Number(currentOp.textContent);
-        firstNum = operate(firstNum, operator, secondNum);
-        currentOp.textContent = firstNum;
-        chainedOperations = button.textContent;
-    } else {
-        firstNum = Number(currentOp.textContent);
-        chainedOperations = operator;
+function typePoint() {
+    if (!currentOp.textContent.includes(".")){
+        currentOp.textContent += '.'
     }
-
-    lastOp.textContent = `${firstNum}${button.textContent}`;
-
-    ongoingOperation = true;
 }
 
 function checkOpStatus() {
@@ -50,6 +45,25 @@ function checkOpStatus() {
         currentOp.textContent = '';
         ongoingOperation = false;
     }
+}
+
+function setupOperation(button) {
+   
+    operator = button;
+    if (chainedOperations != null) {
+        operator = chainedOperations;
+        secondNum = Number(currentOp.textContent);
+        firstNum = operate(firstNum, operator, secondNum);
+        currentOp.textContent = firstNum;
+        chainedOperations = button;
+    } else {
+        firstNum = Number(currentOp.textContent);
+        chainedOperations = operator;
+    }
+
+    lastOp.textContent = `${firstNum}${button}`;
+
+    ongoingOperation = true;
 }
 
 function transformOperator(operator) {
@@ -65,21 +79,6 @@ function transformOperator(operator) {
     }
 }
 
-btnDelete.addEventListener('click', () => {
-    let deleteVal = currentOp.textContent.slice(0,-1);
-    currentOp.textContent = deleteVal;
-    });
-
-btnClear.addEventListener ('click', () => {
-    lastOp.textContent = "";
-    currentOp.textContent = "";
-    firstNum = '';
-    operator = '';
-    secondNum = '';
-    ongoingOperation = false;
-    chainedOperations = null;
-})
-
 function evaluate() {
     if (chainedOperations != null) {
         operator = chainedOperations;
@@ -90,6 +89,52 @@ function evaluate() {
     chainedOperations = null;
 }
 
+function backspace(deleteVal) {
+    deleteVal = deleteVal.slice(0,-1);
+    currentOp.textContent = deleteVal;
+}
+
+function clear() {
+    lastOp.textContent = "";
+    currentOp.textContent = "";
+    firstNum = '';
+    operator = '';
+    secondNum = '';
+    ongoingOperation = false;
+    chainedOperations = null;
+}
+
+function keyboardSupport(e) {
+
+    if (e.key >= 0 || e.key <= 9) inputNumber(e.key)
+    
+    switch(e.key) {
+        case(','):
+            typePoint()
+            break
+        case('+'):
+        case('-'):
+            setupOperation(e.key)
+            break
+        case('*'):
+            setupOperation('x')
+            break
+        case('/'):
+            setupOperation('÷')
+            break
+        case('Enter'):
+            evaluate()
+            break
+        case('Backspace'):
+            if(currentOp.textContent != '') 
+            backspace(currentOp.textContent)
+            break
+        case('Escape'):
+            clear()
+            break
+    }
+    
+}
 
 function add(a,b) {
     return a + b;

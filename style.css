@@ -12,6 +12,11 @@ body {
     display: flex;
     justify-content: center;
     background-color:#9EB384;
+    flex-direction: column;
+}
+
+h1 {
+    text-align: center;
 }
 
 .calculator {
@@ -25,6 +30,7 @@ body {
     border-width: 7px;
     border-color: #CEDEBD;
     padding-bottom: 5px;
+    align-self: center;
 }
 
 #screen {
@@ -42,7 +48,7 @@ body {
 .topBar {
     display: flex;
     gap: 5px;
-    margin: 0 5px;
+    padding: 0 4px;
     height: 95px;
 }
 
@@ -62,22 +68,46 @@ body {
 .keys {
     display: flex;
     height: 400px;
+    flex-direction: column;
+    padding: 0 4px;
+    gap: 4px;
 }
 
 
+
+
+
 .input button {
+    margin-top: 5px;
+}
+
+
+.input button,
+.bottom button {
     width: 120px;
     font-size: 50px;
     border: none;
     background-color: #461111;
     border-radius: 7px;
-    margin-top: 5px;
     color: #9EB384;
 }
+
 .input{
     display:flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    flex: 2;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    gap: 4px;
+}
+
+#equals {
+    flex: 2;
 }
 
 #multiplication, 
@@ -85,4 +115,12 @@ body {
 #plus,
 #equals {
     background-color: #435334;
+}
+
+button {
+    padding: 0;
+}
+
+button:hover {
+    opacity: 0.8;
 }
