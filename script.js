@@ -16,15 +16,13 @@ const btnClear = document.querySelector('#clear');
 document.addEventListener('keydown', keyboardSupport)
 
 btnDelete.addEventListener('click', () => backspace(currentOp.textContent));
-btnClear.addEventListener ('click', () => clear)
+btnClear.addEventListener ('click', () => clear())
 
-numberButton.forEach((button) => 
-    button.addEventListener('click', () => inputNumber(button.textContent)));
+numberButton.forEach((button) => button.addEventListener('click', () => inputNumber(button.textContent)));
 
 pointButton.addEventListener('click', () => typePoint)
 
-operatorButton.forEach((button) => {
-    button.addEventListener('click', () => setupOperation(button.textContent))});
+operatorButton.forEach((button) => button.addEventListener('click', () => setupOperation(button.textContent)));
 
 equals.addEventListener('click', () => evaluate())
 
@@ -61,6 +59,11 @@ function setupOperation(button) {
         chainedOperations = operator;
     }
 
+    if (operator == "÷" && firstNum == 0) {    
+    alert("I am not angry..");
+    clear();
+    }
+
     lastOp.textContent = `${firstNum}${button}`;
 
     ongoingOperation = true;
@@ -95,13 +98,13 @@ function backspace(deleteVal) {
 }
 
 function clear() {
-    lastOp.textContent = "";
-    currentOp.textContent = "";
     firstNum = '';
     operator = '';
     secondNum = '';
     ongoingOperation = false;
     chainedOperations = null;
+    lastOp.textContent = "";
+    currentOp.textContent = "";
 }
 
 function keyboardSupport(e) {
@@ -157,11 +160,7 @@ function operate(a,o,b) {
     o = transformOperator(operator);
     b = secondNum;
 
-    if (operator == "/" && secondNum === 0) {
-        firstNum = '';
-        secondNum = '';
-    return currentOp.textContent = "I am not angry.."
-    }
+    
     switch(o) {
         case "+":
             return add(a,b)
